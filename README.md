@@ -29,27 +29,31 @@ framework/
 │   ├── config/             # Configuration files (YAML/JSON)
 │   ├── tests/              # Unit and integration tests
 │   ├── requirements.txt    # Python dependencies
-│   ├── setup.py            # Package setup
 │   └── README.md           # Backend documentation
 │
-├── frontend/               # Web-based UI for dashboards
+├── frontend/               # Python Dash/Plotly dashboard
 │   ├── src/
-│   │   ├── components/     # Reusable React components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API client services
-│   │   ├── store/          # State management
-│   │   ├── styles/         # CSS/styling
-│   │   └── App.tsx         # Main App component
-│   ├── public/             # Static assets
-│   ├── package.json        # Node.js dependencies
-│   ├── tsconfig.json       # TypeScript configuration
-│   ├── vite.config.ts      # Vite configuration
+│   │   ├── app.py          # Main Dash application
+│   │   ├── callbacks.py    # Dash callbacks and interactivity
+│   │   ├── layouts/        # Page layouts
+│   │   │   ├── dashboard.py
+│   │   │   ├── scorecards.py
+│   │   │   ├── quarantine.py
+│   │   │   ├── lineage.py
+│   │   │   └── alerts.py
+│   │   ├── components/     # Reusable Dash components
+│   │   │   ├── charts.py
+│   │   │   ├── tables.py
+│   │   │   └── graphs.py
+│   │   ├── services/       # API client for backend
+│   │   └── utils.py        # Utility functions
+│   ├── assets/             # CSS and static assets
+│   ├── requirements.txt    # Python dependencies
 │   └── README.md           # Frontend documentation
 │
 ├── docs/                   # Project documentation
 │   ├── architecture.md     # System architecture
 │   ├── api.md              # API documentation
-│   ├── deployment.md       # Deployment guide
 │   └── rules-guide.md      # Rule definition guide
 │
 ├── .gitignore              # Git ignore rules
@@ -62,22 +66,21 @@ framework/
 
 | Layer | Technology | Purpose |
 |-------|-----------|----------|
-| **Language (Backend)** | Python 3.10+ | Core validation engine |
-| **Language (Frontend)** | TypeScript + React | Interactive dashboards |
+| **Language** | Python 3.10+ | Backend & Frontend |
 | **Validation Library** | Great Expectations / Pandas | Rule assertion and checks |
 | **Database** | PostgreSQL / SQLite | Storing results and quarantine records |
 | **Orchestration** | Apache Airflow / Cron | Scheduling batch validation runs |
-| **Visualization** | Plotly / React | DQ scorecard dashboards |
+| **Visualization** | Plotly / Dash | DQ scorecard dashboards |
 | **Lineage Graph** | NetworkX / Graphviz | Data lineage DAG rendering |
 | **Configuration** | YAML / JSON | Rule definitions and thresholds |
 | **Alerting** | Python smtplib / Loguru | Email alerts and structured logging |
 | **API Framework** | FastAPI | RESTful API for backend services |
+| **Web Framework** | Dash | Interactive web dashboards |
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.10+ (Backend)
-- Node.js 18+ (Frontend)
+- Python 3.10+
 - PostgreSQL 12+ or SQLite (Database)
 
 ### Backend Setup
@@ -94,13 +97,14 @@ python -m uvicorn src.api.main:app --reload
 
 ```bash
 cd frontend
-npm install
-npm run dev  # For development
-npm run build  # For production
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python src/app.py  # Runs on http://localhost:8050
 ```
 
 ### Access the Application
-- Frontend: `http://localhost:5173`
+- Frontend Dashboard: `http://localhost:8050`
 - Backend API: `http://localhost:8000`
 - API Docs: `http://localhost:8000/docs`
 
@@ -112,7 +116,7 @@ npm run build  # For production
 4. **Quarantine Mechanism**: Automatic isolation of failing records
 5. **Data Lineage Tracking**: Full traceability from source to output
 6. **Automated Alerts**: Email and log-based notifications
-7. **Interactive Dashboards**: Web-based UI for monitoring and analysis
+7. **Interactive Dashboards**: Web-based UI using Plotly/Dash
 8. **Extensible Architecture**: Reusable framework for all analytics modules
 
 ## 📚 Documentation
@@ -121,7 +125,6 @@ npm run build  # For production
 - [Frontend Documentation](./frontend/README.md)
 - [Architecture Guide](./docs/architecture.md)
 - [API Documentation](./docs/api.md)
-- [Deployment Guide](./docs/deployment.md)
 - [Rule Definition Guide](./docs/rules-guide.md)
 
 ## 🤝 Contributing
